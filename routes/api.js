@@ -7,4 +7,19 @@ module.exports = function (app) {
   
   let convertHandler = new ConvertHandler();
 
+  app.get("/api/convert",(req,res)=>{
+    const initNum = convertHandler.getNum(req.query.input);
+    const unitCheck = convertHandler.getUnit(req.query.input);
+    if (!initNum || !unitCheck) res.status(404).send("invalid unit")  
+    const {initUnit,returnUnit,returnUnitExpanded} = unitCheck;
+    const returnNum = convertHandler.convert(initNum,initUnit);
+    res.send({
+                initNum,
+                initUnit,
+                returnNum:parseFloat(returnNum.toFixed(4)),
+                returnUnit,
+                string:`${initNum} converts to ${returnNum.toFixed(5)} ${returnUnitExpanded}`
+              })
+  })
+
 };
