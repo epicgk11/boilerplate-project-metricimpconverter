@@ -10,7 +10,7 @@ module.exports = function (app) {
   app.get("/api/convert",(req,res)=>{
     const initNum = convertHandler.getNum(req.query.input);
     const unitCheck = convertHandler.getUnit(req.query.input);
-    if (!initNum || !unitCheck) res.status(404).send("invalid unit")  
+    if (!initNum || !unitCheck) return res.status(200).send("invalid string"); 
     const {initUnit,returnUnit,returnUnitExpanded} = unitCheck;
     const returnNum = convertHandler.convert(initNum,initUnit);
     res.send({
